@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TT Festival timetable — by day, stage &amp; time</title>
+<link rel="icon" href="data:," />
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --panel2:#1c232c; --line:#2b333d;
+    --fg:#e6edf3; --muted:#8b949e; --accent:#3fb950; --accent2:#58a6ff;
+    --warn:#d29922; --danger:#f85149; --mono:"SFMono-Regular",Consolas,monospace;
+    --hourH:64px; --colW:190px; --axisW:56px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);
+       font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px}
+  a{color:var(--accent2)}
+  header{padding:16px 22px;border-bottom:1px solid var(--line);background:var(--panel)}
+  header h1{margin:0 0 4px;font-size:18px;letter-spacing:.2px}
+  header p{margin:0;color:var(--muted);font-size:12.5px;max-width:82ch}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+           padding:11px 22px;border-bottom:1px solid var(--line);background:var(--panel2)}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap}
+  .tab{background:#21262d;border:1px solid var(--line);color:var(--fg);
+       padding:7px 12px;border-radius:8px;cursor:pointer;font-size:13px;white-space:nowrap}
+  .tab .n{color:var(--muted);font-family:var(--mono);font-size:11px;margin-left:6px}
+  .tab:hover{border-color:var(--accent2)}
+  .tab.active{background:var(--accent);color:#06210d;border-color:var(--accent);font-weight:600}
+  .tab.active .n{color:#06210d}
+  .tab.today{box-shadow:inset 0 0 0 1px var(--accent2)}
+  .spacer{flex:1}
+  .seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .seg button{background:#21262d;border:0;color:var(--fg);padding:7px 13px;cursor:pointer;font-size:13px}
+  .seg button.active{background:var(--accent2);color:#04121f;font-weight:600}
+  .nowbtn{background:#21262d;border:1px solid var(--line);color:var(--fg);
+       padding:7px 12px;border-radius:8px;cursor:pointer;font-size:13px}
+  .nowbtn:hover{border-color:var(--accent)}
+  input[type=search]{background:#0a0d12;border:1px solid var(--line);color:var(--fg);
+       padding:7px 11px;border-radius:8px;font-size:13px;min-width:180px}
+  main{padding:18px 22px;overflow:auto}
+  .msg{color:var(--muted);padding:48px;text-align:center}
+
+  .gridwrap{overflow:auto;max-height:calc(100vh - 230px);border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+  .grid{position:relative;display:grid}
+  .ghead{position:sticky;top:0;z-index:5;display:grid;background:var(--panel2);border-bottom:1px solid var(--line)}
+  .ghead .corner{position:sticky;left:0;z-index:6;background:var(--panel2);border-right:1px solid var(--line)}
+  .ghead .scol{padding:9px 10px;font-size:12.5px;font-weight:600;border-right:1px solid var(--line);
+         display:flex;align-items:center;gap:8px;min-width:0}
+  .ghead .dot{width:10px;height:10px;border-radius:3px;flex:none}
+  .ghead .scol span.nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .gbody{position:relative;display:grid}
+  .axis{position:sticky;left:0;z-index:4;background:var(--panel);border-right:1px solid var(--line)}
+  .hour{height:var(--hourH);border-bottom:1px solid var(--line);position:relative}
+  .hour .lbl{position:absolute;top:-8px;right:8px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .lane{position:relative;border-right:1px solid var(--line)}
+  .lane .hline{position:absolute;left:0;right:0;height:0;border-top:1px solid #20272f}
+  .nowline{position:absolute;left:0;right:0;height:0;border-top:2px solid var(--danger);z-index:3;pointer-events:none}
+  .nowline::before{content:"now";position:absolute;left:2px;top:-7px;background:var(--danger);color:#fff;
+         font-size:9px;font-weight:700;padding:0 4px;border-radius:3px}
+  .ev{position:absolute;left:4px;right:4px;border-radius:7px;padding:5px 7px;overflow:hidden;
+      background:#1f2630;border:1px solid var(--line);border-left:4px solid var(--accent);cursor:pointer;
+      box-shadow:0 1px 0 rgba(0,0,0,.3)}
+  .ev:hover{filter:brightness(1.15)}
+  .ev.live{box-shadow:0 0 0 1px var(--danger),0 1px 0 rgba(0,0,0,.3)}
+  .ev .t{font-size:12.5px;font-weight:600;line-height:1.15;white-space:normal;word-break:break-word}
+  .ev .tm{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:2px}
+  .ev.short{padding:3px 7px}
+  .ev.short .tm{display:none}
+  .badge{display:inline-block;font-size:9.5px;color:#06210d;background:var(--warn);
+         border-radius:4px;padding:0 4px;margin-left:4px;font-weight:700;vertical-align:middle}
+
+  .stage-block{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:16px;overflow:hidden}
+  .stage-block h3{margin:0;padding:10px 14px;font-size:14px;background:var(--panel2);
+         border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px}
+  .stage-block h3 .dot{width:11px;height:11px;border-radius:3px}
+  .li{display:flex;gap:12px;padding:9px 14px;border-bottom:1px solid var(--line);align-items:baseline;cursor:pointer}
+  .li:last-child{border-bottom:0}
+  .li.live{background:#21161a;border-left:3px solid var(--danger)}
+  .li .when{font-family:var(--mono);font-size:12px;color:var(--accent2);min-width:108px;flex:none}
+  .li .who{font-size:13.5px}
+  .li .who .meta{color:var(--muted);font-size:12px;margin-top:1px}
+  footer{color:var(--muted);font-size:11.5px;padding:14px 22px;border-top:1px solid var(--line)}
+  .pill{font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+  .modal.open{display:flex}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;max-width:520px;width:100%;
+        max-height:85vh;overflow:auto;padding:18px 20px}
+  .card h2{margin:0 0 2px;font-size:18px}
+  .card .sub{color:var(--muted);font-size:12.5px;margin:0 0 12px}
+  .card .bio{font-size:13px;line-height:1.5;color:#cdd6df}
+  .card img{max-width:100%;border-radius:8px;margin:6px 0 12px}
+  .card .x{float:right;cursor:pointer;color:var(--muted);font-size:20px;line-height:1}
+</style>
+</head>
+<body>
+<header>
+  <h1>TT Festival — timetable</h1>
+  <p>
+    Live programme from the festival app's own backend, grouped by <b>day</b>, <b>stage</b> and <b>time</b>.
+    Opens on <b>today</b> and jumps to the current hour. Times in <b>Europe/Amsterdam</b> (CEST).
+    Data auto-refreshes hourly — see footer for last fetch.
+  </p>
+</header>
+
+<div class="toolbar">
+  <div class="tabs" id="dayTabs"></div>
+  <div class="spacer"></div>
+  <button class="nowbtn" id="nowBtn">⟳ Now</button>
+  <input type="search" id="q" placeholder="Filter artist / stage…" autocomplete="off" />
+  <div class="seg" id="viewSeg">
+    <button data-view="grid" class="active">Grid</button>
+    <button data-view="list">List</button>
+  </div>
+</div>
+
+<main id="main"><div class="msg">Loading timetable…</div></main>
+
+<div class="modal" id="modal"><div class="card" id="card"></div></div>
+
+<footer id="footer"></footer>
+
+<script>
+(function(){
+  "use strict";
+  const TZ_DEFAULT = "Europe/Amsterdam";
+  let DATA, TZ, events = [], dayMap = new Map(), days = [];
+  let curDay = null, view = "grid", query = "";
+
+  const esc = s => (s==null?"":String(s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  let fmtTime, fmtDayKey, fmtDayLbl;
+
+  function tzMinutes(d){
+    let h=0,m=0;
+    for(const x of new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",hour12:false,timeZone:TZ}).formatToParts(d)){
+      if(x.type==="hour") h=+x.value; if(x.type==="minute") m=+x.value;
+    }
+    return h*60+m;
+  }
+  // festival day key: sets before 06:00 belong to the previous calendar day
+  function dayKeyOf(d){
+    const mins = tzMinutes(d);
+    const ref = mins < 6*60 ? new Date(d.getTime()-6*3600*1000) : d;
+    return fmtDayKey.format(ref);
+  }
+
+  function prep(){
+    TZ = DATA.timezone || TZ_DEFAULT;
+    fmtTime  = new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",hour12:false,timeZone:TZ});
+    fmtDayKey= new Intl.DateTimeFormat("en-CA",{year:"numeric",month:"2-digit",day:"2-digit",timeZone:TZ});
+    fmtDayLbl= new Intl.DateTimeFormat("en-GB",{weekday:"short",day:"numeric",month:"short",timeZone:TZ});
+
+    events = DATA.events.filter(e=>e.start && e.end).map(e=>{
+      const sd=new Date(e.start), ed=new Date(e.end);
+      const sm=tzMinutes(sd); let em=tzMinutes(ed);
+      const o=Object.assign({},e);
+      o._sd=sd; o._ed=ed; o._day=dayKeyOf(sd);
+      o._startAbs = sm < 6*60 ? sm+1440 : sm;
+      o._endAbs   = em <= sm ? em+1440 : (em<6*60 && sm>=6*60 ? em+1440 : em);
+      return o;
+    });
+    dayMap = new Map();
+    events.forEach(e=>{ if(!dayMap.has(e._day)) dayMap.set(e._day,[]); dayMap.get(e._day).push(e); });
+    days = [...dayMap.keys()].sort();
+  }
+
+  // stage ordering from DATA.stages
+  function stageOrderMap(){
+    const m=new Map(); (DATA.stages||[]).forEach((s,i)=> m.set(s.id,(s.priority!=null?s.priority:9999)*100+i)); return m;
+  }
+  function stageColorMap(){
+    const m=new Map(); (DATA.stages||[]).forEach(s=> m.set(s.id, s.color||null)); return m;
+  }
+  const SO = ()=>stageOrderMap(), SC = ()=>stageColorMap();
+
+  function stagesForDay(list, order){
+    const ids=[...new Set(list.map(e=>e.stageId))];
+    ids.sort((a,b)=>(order.get(a)??9e9)-(order.get(b)??9e9));
+    return ids;
+  }
+
+  function nowInfo(){
+    const now=new Date();
+    const dk=dayKeyOf(now);
+    let abs=tzMinutes(now); if(abs<6*60) abs+=1440;
+    return {now,dk,abs};
+  }
+  function isLive(e){ const n=Date.now(); return e._sd.getTime()<=n && e._ed.getTime()>n; }
+
+  // ---- tabs ----
+  const tabsEl=document.getElementById("dayTabs");
+  function renderTabs(){
+    const todayKey=nowInfo().dk;
+    tabsEl.innerHTML="";
+    days.forEach(dk=>{
+      const b=document.createElement("button");
+      b.className="tab"+(dk===curDay?" active":"")+(dk===todayKey?" today":"");
+      b.innerHTML=fmtDayLbl.format(new Date(dk+"T12:00:00Z"))+'<span class="n">'+dayMap.get(dk).length+'</span>';
+      b.onclick=()=>{ curDay=dk; renderTabs(); render(); };
+      tabsEl.appendChild(b);
+    });
+  }
+
+  function visible(list){
+    if(!query) return list;
+    const q=query.toLowerCase();
+    return list.filter(e=>(e.title||"").toLowerCase().includes(q)||(e.artistName||"").toLowerCase().includes(q)||(e.stageName||"").toLowerCase().includes(q));
+  }
+
+  // ---- grid ----
+  function renderGrid(list){
+    const order=SO(), color=SC();
+    const stages=stagesForDay(list,order);
+    if(!stages.length) return '<div class="msg">No performances match.</div>';
+    let minA=Math.min(...list.map(e=>e._startAbs)), maxA=Math.max(...list.map(e=>e._endAbs));
+    minA=Math.floor(minA/60)*60; maxA=Math.ceil(maxA/60)*60;
+    const hours=(maxA-minA)/60;
+    const colTpl=`var(--axisW) repeat(${stages.length}, var(--colW))`;
+
+    let head=`<div class="ghead" style="grid-template-columns:${colTpl}"><div class="corner scol"><span class="nm">Time</span></div>`;
+    stages.forEach(sid=>{
+      const nm=list.find(e=>e.stageId===sid)?.stageName||("Stage "+sid);
+      const col=color.get(sid)||"#3fb950";
+      head+=`<div class="scol"><span class="dot" style="background:${esc(col)}"></span><span class="nm" title="${esc(nm)}">${esc(nm)}</span></div>`;
+    });
+    head+=`</div>`;
+
+    let body=`<div class="gbody" style="grid-template-columns:${colTpl}"><div class="axis">`;
+    for(let h=0;h<hours;h++){
+      const hr=((minA/60)+h)%24;
+      body+=`<div class="hour"><span class="lbl">${String(hr).padStart(2,"0")}:00</span></div>`;
+    }
+    body+=`</div>`;
+
+    const ni=nowInfo();
+    const showNow = curDay===ni.dk && ni.abs>=minA && ni.abs<=maxA;
+    stages.forEach(sid=>{
+      body+=`<div class="lane" style="height:${hours*64}px">`;
+      for(let h=1;h<hours;h++) body+=`<div class="hline" style="top:${h*64}px"></div>`;
+      if(showNow){ const top=(ni.abs-minA)/60*64; body+=`<div class="nowline" style="top:${top}px"></div>`; }
+      list.filter(e=>e.stageId===sid).forEach(e=>{
+        const top=(e._startAbs-minA)/60*64, hgt=Math.max(22,(e._endAbs-e._startAbs)/60*64-3);
+        const col=e.stageColor||color.get(sid)||"#3fb950";
+        const tm=(e.hideStart?"":fmtTime.format(e._sd))+(e.hideEnd||e.hideStart?"":"–"+fmtTime.format(e._ed));
+        const so=e.soldOut?'<span class="badge">SOLD OUT</span>':"";
+        const cls="ev"+(hgt<34?" short":"")+(isLive(e)?" live":"");
+        body+=`<div class="${cls}" style="top:${top}px;height:${hgt}px;border-left-color:${esc(col)}" data-id="${e.id}">`+
+              `<div class="t">${esc(e.title)}${so}</div><div class="tm">${esc(tm)}</div></div>`;
+      });
+      body+=`</div>`;
+    });
+    body+=`</div>`;
+    return `<div class="gridwrap" id="gridwrap"><div class="grid">${head}${body}</div></div>`;
+  }
+
+  // ---- list ----
+  function renderList(list){
+    const order=SO(), color=SC();
+    const stages=stagesForDay(list,order);
+    if(!stages.length) return '<div class="msg">No performances match.</div>';
+    let html="";
+    stages.forEach(sid=>{
+      const evs=list.filter(e=>e.stageId===sid).sort((a,b)=>a._startAbs-b._startAbs);
+      const nm=evs[0].stageName||("Stage "+sid), col=color.get(sid)||"#3fb950";
+      html+=`<div class="stage-block"><h3><span class="dot" style="background:${esc(col)}"></span>${esc(nm)} <span class="pill">${evs.length}</span></h3>`;
+      evs.forEach(e=>{
+        const tm=(e.hideStart?"—":fmtTime.format(e._sd))+(e.hideEnd||e.hideStart?"":" – "+fmtTime.format(e._ed));
+        const so=e.soldOut?'<span class="badge">SOLD OUT</span>':"";
+        const meta=e.artistName&&e.artistName!==e.title?`<div class="meta">${esc(e.artistName)}</div>`:"";
+        html+=`<div class="li${isLive(e)?" live":""}" data-id="${e.id}"><div class="when">${esc(tm)}</div>`+
+              `<div class="who">${esc(e.title)}${so}${meta}</div></div>`;
+      });
+      html+=`</div>`;
+    });
+    return html;
+  }
+
+  // ---- detail ----
+  const modal=document.getElementById("modal"), card=document.getElementById("card");
+  function openDetail(id){
+    const e=events.find(x=>String(x.id)===String(id)); if(!e) return;
+    const tm=fmtDayLbl.format(e._sd)+" · "+fmtTime.format(e._sd)+"–"+fmtTime.format(e._ed);
+    card.innerHTML=`<span class="x" id="closeX">×</span><h2>${esc(e.title)}</h2>`+
+      `<p class="sub">${esc(e.stageName)} · ${esc(tm)}${e.soldOut?' · <b style="color:var(--warn)">sold out</b>':''}${isLive(e)?' · <b style="color:var(--danger)">on now</b>':''}</p>`+
+      (e.artistImage?`<img src="${esc(e.artistImage)}" alt="" onerror="this.style.display='none'">`:"")+
+      (e.bio?`<div class="bio">${e.bio}</div>`:'<div class="bio" style="color:var(--muted)">No biography in the dataset.</div>');
+    modal.classList.add("open");
+    document.getElementById("closeX").onclick=()=>modal.classList.remove("open");
+  }
+  modal.onclick=ev=>{ if(ev.target===modal) modal.classList.remove("open"); };
+
+  // ---- render + now-focus ----
+  const main=document.getElementById("main");
+  function render(focusNow){
+    const list=visible(dayMap.get(curDay)||[]);
+    main.innerHTML = view==="grid" ? renderGrid(list) : renderList(list);
+    main.querySelectorAll("[data-id]").forEach(el=> el.onclick=()=>openDetail(el.getAttribute("data-id")));
+    if(focusNow) scrollToNow();
+  }
+  function scrollToNow(){
+    const ni=nowInfo();
+    if(curDay!==ni.dk) return;
+    if(view==="grid"){
+      const wrap=document.getElementById("gridwrap"); const nl=wrap&&wrap.querySelector(".nowline");
+      if(wrap&&nl){ wrap.scrollTop=Math.max(0, nl.offsetTop - wrap.clientHeight/2); }
+    }else{
+      const live=main.querySelector(".li.live")||[...main.querySelectorAll(".li")].find(el=>true);
+      if(live) live.scrollIntoView({block:"center"});
+    }
+  }
+  function goNow(){
+    const ni=nowInfo();
+    curDay = days.includes(ni.dk) ? ni.dk : nearestDay(ni.dk);
+    renderTabs(); render(true);
+  }
+  function nearestDay(dk){
+    if(days.includes(dk)) return dk;
+    const after=days.find(d=>d>=dk); return after||days[days.length-1]||days[0];
+  }
+
+  document.getElementById("viewSeg").addEventListener("click",e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    view=b.dataset.view; [...e.currentTarget.children].forEach(c=>c.classList.toggle("active",c===b));
+    render(true);
+  });
+  document.getElementById("q").addEventListener("input",e=>{ query=e.target.value.trim(); render(false); });
+  document.getElementById("nowBtn").addEventListener("click",goNow);
+
+  function setFooter(){
+    let fetched="";
+    if(DATA.fetchedAt){ try{ fetched=" · data fetched "+new Date(DATA.fetchedAt).toLocaleString("en-GB",{timeZone:TZ,dateStyle:"medium",timeStyle:"short"})+" CEST"; }catch(_){ } }
+    document.getElementById("footer").innerHTML=
+      `${events.length} performances · ${days.length} days · ${(DATA.stages||[]).length} stages. `+
+      `Source: <span class="pill">${esc(DATA.source||"Appmiral API")}</span>${fetched}.`;
+  }
+
+  function boot(data){
+    DATA=data; prep();
+    if(!days.length){ main.innerHTML='<div class="msg">No timetable data.</div>'; return; }
+    const ni=nowInfo();
+    curDay = days.includes(ni.dk) ? ni.dk : nearestDay(ni.dk);
+    renderTabs(); setFooter(); render(true);
+  }
+
+  fetch("timetable.json?_="+Date.now())
+    .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+    .then(boot)
+    .catch(err=>{ main.innerHTML='<div class="msg">Could not load <code>timetable.json</code>: '+esc(err.message)+'</div>'; });
+})();
+</script>
+</body>
+</html>
