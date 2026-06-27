@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://graafg.github.io/tt-timetable/</loc>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://graafg.github.io/tt-timetable/?lang=nl"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://graafg.github.io/tt-timetable/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://graafg.github.io/tt-timetable/?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://graafg.github.io/tt-timetable/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://graafg.github.io/tt-timetable/"/>
+  </url>
+</urlset>
