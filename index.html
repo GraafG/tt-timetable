@@ -2,23 +2,104 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>TT Festival timetable — by day, stage &amp; time</title>
-<link rel="icon" href="data:," />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+<title id="docTitle">TT Festival timetable — set times by day, stage &amp; time | Assen 2026</title>
+<meta id="metaDesc" name="description" content="Live, mobile-friendly timetable for the TT Festival in Assen (2026). Set times by day, stage and time, with a grid clash-finder and list view. Times in Europe/Amsterdam, auto-refreshed hourly." />
+<meta name="keywords" content="TT Festival, TT Festival Assen, TT Festival timetable, TT Festival 2026, Assen, set times, line-up, programma, tijdschema, Zeitplan, programme, festival schedule, clash finder" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta name="author" content="TT Festival timetable" />
+<meta name="theme-color" content="#e10600" />
+<link rel="canonical" href="https://graafg.github.io/tt-timetable/" />
+
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<link rel="mask-icon" href="favicon.svg" color="#e10600" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TT Festival timetable" />
+<meta id="ogTitle" property="og:title" content="TT Festival — timetable (Assen 2026)" />
+<meta id="ogDesc" property="og:description" content="Live, mobile-friendly set-times for the TT Festival in Assen — by day, stage and time. Grid clash-finder + list view, auto-refreshed hourly." />
+<meta property="og:url" content="https://graafg.github.io/tt-timetable/" />
+<meta property="og:image" content="https://graafg.github.io/tt-timetable/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="TT Festival timetable — 25–28 June 2026, Assen" />
+<meta id="ogLocale" property="og:locale" content="en_GB" />
+<meta property="og:locale:alternate" content="nl_NL" />
+<meta property="og:locale:alternate" content="de_DE" />
+<meta property="og:locale:alternate" content="fr_FR" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta id="twTitle" name="twitter:title" content="TT Festival — timetable (Assen 2026)" />
+<meta id="twDesc" name="twitter:description" content="Live, mobile-friendly set-times for the TT Festival in Assen — by day, stage and time." />
+<meta name="twitter:image" content="https://graafg.github.io/tt-timetable/og-image.png" />
+
+<!-- Alternate languages -->
+<link rel="alternate" hreflang="nl" href="https://graafg.github.io/tt-timetable/?lang=nl" />
+<link rel="alternate" hreflang="en" href="https://graafg.github.io/tt-timetable/?lang=en" />
+<link rel="alternate" hreflang="de" href="https://graafg.github.io/tt-timetable/?lang=de" />
+<link rel="alternate" hreflang="fr" href="https://graafg.github.io/tt-timetable/?lang=fr" />
+<link rel="alternate" hreflang="x-default" href="https://graafg.github.io/tt-timetable/" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Festival",
+  "name": "TT Festival",
+  "description": "TT Festival in Assen — set-times timetable by day, stage and time.",
+  "startDate": "2026-06-25",
+  "endDate": "2026-06-28",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "location": {
+    "@type": "Place",
+    "name": "Assen",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Assen",
+      "addressRegion": "Drenthe",
+      "addressCountry": "NL"
+    }
+  },
+  "image": "https://graafg.github.io/tt-timetable/og-image.png",
+  "url": "https://graafg.github.io/tt-timetable/",
+  "inLanguage": ["nl", "en", "de", "fr"]
+}
+</script>
+
+<link rel="preconnect" href="https://media.appmiral.com" crossorigin />
 <style>
   :root{
-    --bg:#0e1116; --panel:#161b22; --panel2:#1c232c; --line:#2b333d;
-    --fg:#e6edf3; --muted:#8b949e; --accent:#3fb950; --accent2:#58a6ff;
-    --warn:#d29922; --danger:#f85149; --mono:"SFMono-Regular",Consolas,monospace;
+    --bg:#0b0c0e; --panel:#15171b; --panel2:#1c2026; --line:#2b313a;
+    --fg:#eef2f6; --muted:#929aa4; --accent:#e10600; --accent2:#3aa0ff;
+    --warn:#f5b301; --danger:#ff3b30; --mono:"SFMono-Regular",Consolas,monospace;
     --hourH:64px; --colW:190px; --axisW:56px;
+    --checker:repeating-linear-gradient(90deg,#eef0f2 0 8px,#0b0b0b 8px 16px);
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--fg);
-       font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--fg);min-height:100dvh;display:flex;flex-direction:column;
+       font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;-webkit-text-size-adjust:100%}
   a{color:var(--accent2)}
-  header{padding:16px 22px;border-bottom:1px solid var(--line);background:var(--panel)}
-  header h1{margin:0 0 4px;font-size:18px;letter-spacing:.2px}
+  header{padding:14px 22px;border-top:3px solid var(--accent);
+         background:linear-gradient(180deg,#181b20,var(--panel));
+         display:flex;gap:14px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+  .head-main{min-width:0;flex:1 1 360px}
+  header h1{margin:0 0 4px;font-size:18px;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;gap:9px}
+  header h1 .flag{font-size:18px}
   header p{margin:0;color:var(--muted);font-size:12.5px;max-width:82ch}
+  .langsw{display:flex;gap:4px;flex:none;border:1px solid var(--line);border-radius:9px;padding:3px;background:#0e1216}
+  .langsw button{background:transparent;border:0;color:var(--muted);font-size:12px;font-weight:700;
+         padding:5px 9px;border-radius:6px;cursor:pointer;letter-spacing:.4px;min-width:34px}
+  .langsw button:hover{color:var(--fg)}
+  .langsw button.active{background:var(--accent);color:#fff}
+  .checker{height:8px;background:var(--checker);background-size:16px 8px;
+           box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 -1px 0 rgba(0,0,0,.45)}
   .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;
            padding:11px 22px;border-bottom:1px solid var(--line);background:var(--panel2)}
   .tabs{display:flex;gap:6px;flex-wrap:wrap}
@@ -26,9 +107,11 @@
        padding:7px 12px;border-radius:8px;cursor:pointer;font-size:13px;white-space:nowrap}
   .tab .n{color:var(--muted);font-family:var(--mono);font-size:11px;margin-left:6px}
   .tab:hover{border-color:var(--accent2)}
-  .tab.active{background:var(--accent);color:#06210d;border-color:var(--accent);font-weight:600}
-  .tab.active .n{color:#06210d}
-  .tab.today{box-shadow:inset 0 0 0 1px var(--accent2)}
+  .tab.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700;
+         box-shadow:0 0 0 1px rgba(225,6,0,.35),0 2px 8px rgba(225,6,0,.25)}
+  .tab.active .n{color:rgba(255,255,255,.85)}
+  .tab.today{box-shadow:inset 0 0 0 2px var(--accent2)}
+  .tab.active.today{box-shadow:inset 0 0 0 2px var(--accent2),0 2px 8px rgba(225,6,0,.25)}
   .spacer{flex:1}
   .seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
   .seg button{background:#21262d;border:0;color:var(--fg);padding:7px 13px;cursor:pointer;font-size:13px}
@@ -38,10 +121,10 @@
   .nowbtn:hover{border-color:var(--accent)}
   input[type=search]{background:#0a0d12;border:1px solid var(--line);color:var(--fg);
        padding:7px 11px;border-radius:8px;font-size:13px;min-width:180px}
-  main{padding:18px 22px;overflow:auto}
+  main{flex:1 1 auto;min-height:0;padding:18px 22px;overflow:auto}
   .msg{color:var(--muted);padding:48px;text-align:center}
 
-  .gridwrap{overflow:auto;max-height:calc(100vh - 230px);border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+  .gridwrap{overflow:auto;max-height:100%;border:1px solid var(--line);border-radius:10px;background:var(--panel);-webkit-overflow-scrolling:touch}
   .grid{position:relative;display:grid}
   .ghead{position:sticky;top:0;z-index:5;display:grid;background:var(--panel2);border-bottom:1px solid var(--line)}
   .ghead .corner{position:sticky;left:0;z-index:6;background:var(--panel2);border-right:1px solid var(--line)}
@@ -55,19 +138,22 @@
   .hour .lbl{position:absolute;top:-8px;right:8px;font-family:var(--mono);font-size:11px;color:var(--muted)}
   .lane{position:relative;border-right:1px solid var(--line)}
   .lane .hline{position:absolute;left:0;right:0;height:0;border-top:1px solid #20272f}
-  .nowline{position:absolute;left:0;right:0;height:0;border-top:2px solid var(--danger);z-index:3;pointer-events:none}
-  .nowline::before{content:"now";position:absolute;left:2px;top:-7px;background:var(--danger);color:#fff;
-         font-size:9px;font-weight:700;padding:0 4px;border-radius:3px}
+  .nowline{position:absolute;left:0;right:0;height:6px;margin-top:-3px;z-index:3;pointer-events:none;
+         background:var(--checker);background-size:12px 6px;box-shadow:0 0 8px rgba(225,6,0,.55)}
+  .nowline::before{content:attr(data-label);position:absolute;left:2px;top:-15px;background:var(--accent);color:#fff;
+         font-size:9px;font-weight:800;letter-spacing:.3px;padding:1px 5px;border-radius:4px;white-space:nowrap}
   .ev{position:absolute;left:4px;right:4px;border-radius:7px;padding:5px 7px;overflow:hidden;
       background:#1f2630;border:1px solid var(--line);border-left:4px solid var(--accent);cursor:pointer;
       box-shadow:0 1px 0 rgba(0,0,0,.3)}
   .ev:hover{filter:brightness(1.15)}
-  .ev.live{box-shadow:0 0 0 1px var(--danger),0 1px 0 rgba(0,0,0,.3)}
+  .ev.live{box-shadow:0 0 0 1px var(--danger),0 1px 0 rgba(0,0,0,.3);animation:liveGlow 1.8s ease-in-out infinite}
+  @keyframes liveGlow{0%,100%{box-shadow:0 0 0 1px var(--danger),0 1px 0 rgba(0,0,0,.3)}
+         50%{box-shadow:0 0 0 1px var(--danger),0 0 12px rgba(255,59,48,.6)}}
   .ev .t{font-size:12.5px;font-weight:600;line-height:1.15;white-space:normal;word-break:break-word}
   .ev .tm{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:2px}
   .ev.short{padding:3px 7px}
   .ev.short .tm{display:none}
-  .badge{display:inline-block;font-size:9.5px;color:#06210d;background:var(--warn);
+  .badge{display:inline-block;font-size:9.5px;color:#1a1300;background:var(--warn);
          border-radius:4px;padding:0 4px;margin-left:4px;font-weight:700;vertical-align:middle}
 
   .stage-block{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:16px;overflow:hidden}
@@ -76,38 +162,75 @@
   .stage-block h3 .dot{width:11px;height:11px;border-radius:3px}
   .li{display:flex;gap:12px;padding:9px 14px;border-bottom:1px solid var(--line);align-items:baseline;cursor:pointer}
   .li:last-child{border-bottom:0}
-  .li.live{background:#21161a;border-left:3px solid var(--danger)}
+  .li:hover{background:#1a1f27}
+  .li.live{background:#241316;border-left:3px solid var(--danger)}
   .li .when{font-family:var(--mono);font-size:12px;color:var(--accent2);min-width:108px;flex:none}
   .li .who{font-size:13.5px}
   .li .who .meta{color:var(--muted);font-size:12px;margin-top:1px}
-  footer{color:var(--muted);font-size:11.5px;padding:14px 22px;border-top:1px solid var(--line)}
+  footer{color:var(--muted);font-size:11.5px;padding:14px 22px;border-top:1px solid var(--line);background:var(--panel)}
   .pill{font-family:var(--mono);font-size:11px;color:var(--muted)}
 
   .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
   .modal.open{display:flex}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;max-width:520px;width:100%;
+  .card{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;max-width:520px;width:100%;
         max-height:85vh;overflow:auto;padding:18px 20px}
   .card h2{margin:0 0 2px;font-size:18px}
   .card .sub{color:var(--muted);font-size:12.5px;margin:0 0 12px}
   .card .bio{font-size:13px;line-height:1.5;color:#cdd6df}
   .card img{max-width:100%;border-radius:8px;margin:6px 0 12px}
   .card .x{float:right;cursor:pointer;color:var(--muted);font-size:20px;line-height:1}
+
+  @media (prefers-reduced-motion: reduce){ .ev.live{animation:none} }
+
+  @media (max-width:640px){
+    header{padding:12px 14px}
+    header h1{font-size:16px;letter-spacing:.4px}
+    header p{font-size:12px;max-width:none}
+    .checker{height:7px;background-size:14px 7px}
+    .toolbar{padding:9px 12px;gap:8px}
+    .tabs{order:-1;width:100%;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
+          scrollbar-width:none;padding-bottom:2px}
+    .tabs::-webkit-scrollbar{display:none}
+    .tab{padding:8px 12px}
+    .spacer{display:none}
+    main{padding:12px 12px}
+    input[type=search]{flex:1 1 auto;min-width:0;font-size:16px;padding:9px 11px}
+    .nowbtn{padding:9px 12px}
+    .seg button{padding:9px 13px}
+    :root{--colW:146px;--axisW:46px}
+    .li{padding:11px 12px}
+    .li .when{min-width:92px}
+    .card{padding:16px 14px}
+  }
+  @media (max-width:380px){
+    :root{--colW:130px}
+    header p{display:none}
+  }
 </style>
 </head>
 <body>
 <header>
-  <h1>TT Festival — timetable</h1>
-  <p>
-    Live programme from the festival app's own backend, grouped by <b>day</b>, <b>stage</b> and <b>time</b>.
-    Opens on <b>today</b> and jumps to the current hour. Times in <b>Europe/Amsterdam</b> (CEST).
-    Data auto-refreshes hourly — see footer for last fetch.
-  </p>
+  <div class="head-main">
+    <h1><span class="flag" aria-hidden="true">🏁</span><span id="hTitle">TT Festival — timetable</span></h1>
+    <p id="hIntro">
+      Live programme from the festival app's own backend, grouped by <b>day</b>, <b>stage</b> and <b>time</b>.
+      Opens on <b>today</b> and jumps to the current hour. Times in <b>Europe/Amsterdam</b> (CEST).
+      Data auto-refreshes hourly — see footer for last fetch.
+    </p>
+  </div>
+  <div class="langsw" id="langSwitch" role="group" aria-label="Language">
+    <button data-lang="nl" type="button" title="Nederlands">NL</button>
+    <button data-lang="en" type="button" title="English">EN</button>
+    <button data-lang="de" type="button" title="Deutsch">DE</button>
+    <button data-lang="fr" type="button" title="Français">FR</button>
+  </div>
 </header>
+<div class="checker" aria-hidden="true"></div>
 
 <div class="toolbar">
   <div class="tabs" id="dayTabs"></div>
   <div class="spacer"></div>
-  <button class="nowbtn" id="nowBtn">⟳ Now</button>
+  <button class="nowbtn" id="nowBtn" title="Now">⟳ <span id="nowLbl">Now</span></button>
   <input type="search" id="q" placeholder="Filter artist / stage…" autocomplete="off" />
   <div class="seg" id="viewSeg">
     <button data-view="grid" class="active">Grid</button>
@@ -115,10 +238,11 @@
   </div>
 </div>
 
-<main id="main"><div class="msg">Loading timetable…</div></main>
+<main id="main"><div class="msg" id="loadingMsg">Loading timetable…</div></main>
 
 <div class="modal" id="modal"><div class="card" id="card"></div></div>
 
+<div class="checker" aria-hidden="true"></div>
 <footer id="footer"></footer>
 
 <script>
@@ -129,7 +253,128 @@
   let curDay = null, view = "grid", query = "";
 
   const esc = s => (s==null?"":String(s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  // artistImage is a width-keyed object ({"100":url,"500":url,...}); pick a good-sized URL.
+  function imgUrl(ai){
+    if(!ai) return "";
+    if(typeof ai==="string") return ai;
+    if(typeof ai!=="object") return "";
+    const ent=Object.keys(ai).map(k=>[parseInt(k,10),ai[k]]).filter(([w,v])=>v&&typeof v==="string"&&!isNaN(w)&&w>0);
+    if(!ent.length) return "";
+    ent.sort((a,b)=>a[0]-b[0]);
+    return (ent.find(([w])=>w>=400)||ent[ent.length-1])[1];
+  }
   let fmtTime, fmtDayKey, fmtDayLbl;
+
+  // ---- i18n (NL / EN / DE / FR) ----
+  const SUPPORTED = ["nl","en","de","fr"];
+  const LOCALES = { nl:"nl-NL", en:"en-GB", de:"de-DE", fr:"fr-FR" };
+  const OG_LOCALES = { nl:"nl_NL", en:"en_GB", de:"de_DE", fr:"fr_FR" };
+  const I18N = {
+    en:{
+      docTitle:"TT Festival timetable — set times by day, stage & time | Assen 2026",
+      ogTitle:"TT Festival — timetable (Assen 2026)",
+      metaDesc:"Live, mobile-friendly timetable for the TT Festival in Assen (2026). Set times by day, stage and time, with a grid clash-finder and list view. Times in Europe/Amsterdam, auto-refreshed hourly.",
+      h1:"TT Festival — timetable",
+      intro:"Live programme from the festival app's own backend, grouped by <b>day</b>, <b>stage</b> and <b>time</b>. Opens on <b>today</b> and jumps to the current hour. Times in <b>Europe/Amsterdam</b> (CEST). Data auto-refreshes hourly — see footer for last fetch.",
+      now:"Now", nowChip:"now", searchPh:"Filter artist / stage…",
+      grid:"Grid", list:"List", timeCol:"Time",
+      loading:"Loading timetable…", noMatch:"No performances match.", noData:"No timetable data.",
+      loadError:"Could not load timetable.json: ",
+      soldOut:"sold out", soldOutBadge:"SOLD OUT", onNow:"on now", noBio:"No biography in the dataset.",
+      performances:"performances", days:"days", stages:"stages", source:"Source", fetched:"data fetched"
+    },
+    nl:{
+      docTitle:"TT Festival tijdschema — speeltijden per dag, podium & tijd | Assen 2026",
+      ogTitle:"TT Festival — tijdschema (Assen 2026)",
+      metaDesc:"Live, mobielvriendelijk tijdschema voor het TT Festival in Assen (2026). Speeltijden per dag, podium en tijd, met rasteroverzicht en lijstweergave. Tijden in Europa/Amsterdam, elk uur ververst.",
+      h1:"TT Festival — tijdschema",
+      intro:"Live programma uit de eigen backend van de festival-app, gegroepeerd per <b>dag</b>, <b>podium</b> en <b>tijd</b>. Opent op <b>vandaag</b> en springt naar het huidige uur. Tijden in <b>Europa/Amsterdam</b> (CEST). Data ververst automatisch elk uur — zie de voettekst voor de laatste update.",
+      now:"Nu", nowChip:"nu", searchPh:"Filter artiest / podium…",
+      grid:"Raster", list:"Lijst", timeCol:"Tijd",
+      loading:"Tijdschema laden…", noMatch:"Geen optredens gevonden.", noData:"Geen programmagegevens.",
+      loadError:"Kon timetable.json niet laden: ",
+      soldOut:"uitverkocht", soldOutBadge:"UITVERKOCHT", onNow:"nu bezig", noBio:"Geen biografie in de dataset.",
+      performances:"optredens", days:"dagen", stages:"podia", source:"Bron", fetched:"data opgehaald"
+    },
+    de:{
+      docTitle:"TT Festival Zeitplan — Spielzeiten nach Tag, Bühne & Zeit | Assen 2026",
+      ogTitle:"TT Festival — Zeitplan (Assen 2026)",
+      metaDesc:"Live, mobil-optimierter Zeitplan für das TT Festival in Assen (2026). Spielzeiten nach Tag, Bühne und Zeit, mit Raster-Überschneidungsfinder und Listenansicht. Zeiten in Europa/Amsterdam, stündlich aktualisiert.",
+      h1:"TT Festival — Zeitplan",
+      intro:"Live-Programm aus dem eigenen Backend der Festival-App, gruppiert nach <b>Tag</b>, <b>Bühne</b> und <b>Zeit</b>. Öffnet beim <b>heutigen Tag</b> und springt zur aktuellen Stunde. Zeiten in <b>Europa/Amsterdam</b> (MESZ). Daten werden stündlich automatisch aktualisiert — siehe Fußzeile für den letzten Abruf.",
+      now:"Jetzt", nowChip:"jetzt", searchPh:"Künstler / Bühne filtern…",
+      grid:"Raster", list:"Liste", timeCol:"Zeit",
+      loading:"Zeitplan wird geladen…", noMatch:"Keine passenden Auftritte.", noData:"Keine Zeitplandaten.",
+      loadError:"timetable.json konnte nicht geladen werden: ",
+      soldOut:"ausverkauft", soldOutBadge:"AUSVERKAUFT", onNow:"läuft jetzt", noBio:"Keine Biografie im Datensatz.",
+      performances:"Auftritte", days:"Tage", stages:"Bühnen", source:"Quelle", fetched:"Daten abgerufen"
+    },
+    fr:{
+      docTitle:"Programme du TT Festival — horaires par jour, scène & heure | Assen 2026",
+      ogTitle:"TT Festival — programme (Assen 2026)",
+      metaDesc:"Programme en direct et adapté au mobile pour le TT Festival d'Assen (2026). Horaires par jour, scène et heure, avec vue grille (anti-conflits) et liste. Heures en Europe/Amsterdam, actualisé chaque heure.",
+      h1:"TT Festival — programme",
+      intro:"Programme en direct depuis le backend de l'appli du festival, regroupé par <b>jour</b>, <b>scène</b> et <b>heure</b>. S'ouvre sur <b>aujourd'hui</b> et saute à l'heure actuelle. Heures en <b>Europe/Amsterdam</b> (CEST). Données actualisées automatiquement chaque heure — voir le pied de page pour la dernière mise à jour.",
+      now:"Maintenant", nowChip:"maintenant", searchPh:"Filtrer artiste / scène…",
+      grid:"Grille", list:"Liste", timeCol:"Heure",
+      loading:"Chargement du programme…", noMatch:"Aucune représentation trouvée.", noData:"Aucune donnée de programme.",
+      loadError:"Impossible de charger timetable.json : ",
+      soldOut:"complet", soldOutBadge:"COMPLET", onNow:"en cours", noBio:"Aucune biographie dans les données.",
+      performances:"représentations", days:"jours", stages:"scènes", source:"Source", fetched:"données récupérées"
+    }
+  };
+  let lang = "en", T = I18N.en, LOCALE = "en-GB";
+  function t(k){ return (T && T[k]!=null) ? T[k] : (I18N.en[k]!=null ? I18N.en[k] : k); }
+
+  function detectLang(){
+    try{ const qs=new URLSearchParams(location.search).get("lang"); if(qs && SUPPORTED.includes(qs)) return qs; }catch(_){}
+    try{ const s=localStorage.getItem("ttlang"); if(s && SUPPORTED.includes(s)) return s; }catch(_){}
+    const cands = navigator.languages || [navigator.language || "en"];
+    for(const l of cands){ const c=(l||"").slice(0,2).toLowerCase(); if(SUPPORTED.includes(c)) return c; }
+    return "en";
+  }
+  function buildFormats(){
+    const tz = TZ || TZ_DEFAULT;
+    fmtTime   = new Intl.DateTimeFormat(LOCALE,{hour:"2-digit",minute:"2-digit",hour12:false,timeZone:tz});
+    fmtDayKey = new Intl.DateTimeFormat("en-CA",{year:"numeric",month:"2-digit",day:"2-digit",timeZone:tz});
+    fmtDayLbl = new Intl.DateTimeFormat(LOCALE,{weekday:"short",day:"numeric",month:"short",timeZone:tz});
+  }
+  function isMobile(){ return !!(window.matchMedia && window.matchMedia("(max-width:640px)").matches); }
+  function syncViewSeg(){ document.querySelectorAll("#viewSeg button").forEach(b=>b.classList.toggle("active", b.dataset.view===view)); }
+
+  function applyStaticI18n(){
+    document.documentElement.lang = lang;
+    const setText=(id,txt)=>{ const el=document.getElementById(id); if(el) el.textContent=txt; };
+    setText("hTitle", t("h1"));
+    const intro=document.getElementById("hIntro"); if(intro) intro.innerHTML=t("intro");
+    setText("nowLbl", t("now"));
+    const nb=document.getElementById("nowBtn"); if(nb) nb.title=t("now");
+    const q=document.getElementById("q"); if(q) q.placeholder=t("searchPh");
+    const seg=document.getElementById("viewSeg");
+    if(seg){ const g=seg.querySelector('[data-view="grid"]'), l=seg.querySelector('[data-view="list"]');
+             if(g) g.textContent=t("grid"); if(l) l.textContent=t("list"); }
+    const lm=document.getElementById("loadingMsg"); if(lm) lm.textContent=t("loading");
+  }
+  function applyMeta(){
+    document.title = t("docTitle");
+    const setAttr=(id,val)=>{ const el=document.getElementById(id); if(el) el.setAttribute("content",val); };
+    setAttr("metaDesc", t("metaDesc"));
+    setAttr("ogTitle", t("ogTitle"));
+    setAttr("ogDesc", t("metaDesc"));
+    setAttr("twTitle", t("ogTitle"));
+    setAttr("twDesc", t("metaDesc"));
+    setAttr("ogLocale", OG_LOCALES[lang] || "en_GB");
+  }
+  function applyLang(code, rerender){
+    if(!SUPPORTED.includes(code)) code="en";
+    lang=code; T=I18N[code]; LOCALE=LOCALES[code]||"en-GB";
+    try{ localStorage.setItem("ttlang", code); }catch(_){}
+    buildFormats();
+    applyStaticI18n();
+    applyMeta();
+    document.querySelectorAll("#langSwitch button").forEach(b=>b.classList.toggle("active", b.dataset.lang===code));
+    if(rerender && DATA){ renderTabs(); setFooter(); render(false); }
+  }
 
   function tzMinutes(d){
     let h=0,m=0;
@@ -147,9 +392,7 @@
 
   function prep(){
     TZ = DATA.timezone || TZ_DEFAULT;
-    fmtTime  = new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",hour12:false,timeZone:TZ});
-    fmtDayKey= new Intl.DateTimeFormat("en-CA",{year:"numeric",month:"2-digit",day:"2-digit",timeZone:TZ});
-    fmtDayLbl= new Intl.DateTimeFormat("en-GB",{weekday:"short",day:"numeric",month:"short",timeZone:TZ});
+    buildFormats();
 
     events = DATA.events.filter(e=>e.start && e.end).map(e=>{
       const sd=new Date(e.start), ed=new Date(e.end);
@@ -211,14 +454,15 @@
   // ---- grid ----
   function renderGrid(list){
     const order=SO(), color=SC();
+    const HOUR_H=parseInt(getComputedStyle(document.documentElement).getPropertyValue("--hourH"))||64;
     const stages=stagesForDay(list,order);
-    if(!stages.length) return '<div class="msg">No performances match.</div>';
+    if(!stages.length) return '<div class="msg">'+esc(t("noMatch"))+'</div>';
     let minA=Math.min(...list.map(e=>e._startAbs)), maxA=Math.max(...list.map(e=>e._endAbs));
     minA=Math.floor(minA/60)*60; maxA=Math.ceil(maxA/60)*60;
     const hours=(maxA-minA)/60;
     const colTpl=`var(--axisW) repeat(${stages.length}, var(--colW))`;
 
-    let head=`<div class="ghead" style="grid-template-columns:${colTpl}"><div class="corner scol"><span class="nm">Time</span></div>`;
+    let head=`<div class="ghead" style="grid-template-columns:${colTpl}"><div class="corner scol"><span class="nm">${esc(t("timeCol"))}</span></div>`;
     stages.forEach(sid=>{
       const nm=list.find(e=>e.stageId===sid)?.stageName||("Stage "+sid);
       const col=color.get(sid)||"#3fb950";
@@ -235,15 +479,16 @@
 
     const ni=nowInfo();
     const showNow = curDay===ni.dk && ni.abs>=minA && ni.abs<=maxA;
+    const nowLabel = "🏁 "+t("nowChip");
     stages.forEach(sid=>{
-      body+=`<div class="lane" style="height:${hours*64}px">`;
-      for(let h=1;h<hours;h++) body+=`<div class="hline" style="top:${h*64}px"></div>`;
-      if(showNow){ const top=(ni.abs-minA)/60*64; body+=`<div class="nowline" style="top:${top}px"></div>`; }
+      body+=`<div class="lane" style="height:${hours*HOUR_H}px">`;
+      for(let h=1;h<hours;h++) body+=`<div class="hline" style="top:${h*HOUR_H}px"></div>`;
+      if(showNow){ const top=(ni.abs-minA)/60*HOUR_H; body+=`<div class="nowline" data-label="${esc(nowLabel)}" style="top:${top}px"></div>`; }
       list.filter(e=>e.stageId===sid).forEach(e=>{
-        const top=(e._startAbs-minA)/60*64, hgt=Math.max(22,(e._endAbs-e._startAbs)/60*64-3);
+        const top=(e._startAbs-minA)/60*HOUR_H, hgt=Math.max(22,(e._endAbs-e._startAbs)/60*HOUR_H-3);
         const col=e.stageColor||color.get(sid)||"#3fb950";
         const tm=(e.hideStart?"":fmtTime.format(e._sd))+(e.hideEnd||e.hideStart?"":"–"+fmtTime.format(e._ed));
-        const so=e.soldOut?'<span class="badge">SOLD OUT</span>':"";
+        const so=e.soldOut?'<span class="badge">'+esc(t("soldOutBadge"))+'</span>':"";
         const cls="ev"+(hgt<34?" short":"")+(isLive(e)?" live":"");
         body+=`<div class="${cls}" style="top:${top}px;height:${hgt}px;border-left-color:${esc(col)}" data-id="${e.id}">`+
               `<div class="t">${esc(e.title)}${so}</div><div class="tm">${esc(tm)}</div></div>`;
@@ -258,7 +503,7 @@
   function renderList(list){
     const order=SO(), color=SC();
     const stages=stagesForDay(list,order);
-    if(!stages.length) return '<div class="msg">No performances match.</div>';
+    if(!stages.length) return '<div class="msg">'+esc(t("noMatch"))+'</div>';
     let html="";
     stages.forEach(sid=>{
       const evs=list.filter(e=>e.stageId===sid).sort((a,b)=>a._startAbs-b._startAbs);
@@ -266,7 +511,7 @@
       html+=`<div class="stage-block"><h3><span class="dot" style="background:${esc(col)}"></span>${esc(nm)} <span class="pill">${evs.length}</span></h3>`;
       evs.forEach(e=>{
         const tm=(e.hideStart?"—":fmtTime.format(e._sd))+(e.hideEnd||e.hideStart?"":" – "+fmtTime.format(e._ed));
-        const so=e.soldOut?'<span class="badge">SOLD OUT</span>':"";
+        const so=e.soldOut?'<span class="badge">'+esc(t("soldOutBadge"))+'</span>':"";
         const meta=e.artistName&&e.artistName!==e.title?`<div class="meta">${esc(e.artistName)}</div>`:"";
         html+=`<div class="li${isLive(e)?" live":""}" data-id="${e.id}"><div class="when">${esc(tm)}</div>`+
               `<div class="who">${esc(e.title)}${so}${meta}</div></div>`;
@@ -282,9 +527,9 @@
     const e=events.find(x=>String(x.id)===String(id)); if(!e) return;
     const tm=fmtDayLbl.format(e._sd)+" · "+fmtTime.format(e._sd)+"–"+fmtTime.format(e._ed);
     card.innerHTML=`<span class="x" id="closeX">×</span><h2>${esc(e.title)}</h2>`+
-      `<p class="sub">${esc(e.stageName)} · ${esc(tm)}${e.soldOut?' · <b style="color:var(--warn)">sold out</b>':''}${isLive(e)?' · <b style="color:var(--danger)">on now</b>':''}</p>`+
-      (e.artistImage?`<img src="${esc(e.artistImage)}" alt="" onerror="this.style.display='none'">`:"")+
-      (e.bio?`<div class="bio">${e.bio}</div>`:'<div class="bio" style="color:var(--muted)">No biography in the dataset.</div>');
+      `<p class="sub">${esc(e.stageName)} · ${esc(tm)}${e.soldOut?' · <b style="color:var(--warn)">'+esc(t("soldOut"))+'</b>':''}${isLive(e)?' · <b style="color:var(--danger)">'+esc(t("onNow"))+'</b>':''}</p>`+
+      (imgUrl(e.artistImage)?`<img src="${esc(imgUrl(e.artistImage))}" alt="${esc(e.artistName||e.title||"")}" loading="lazy" onerror="this.style.display='none'">`:"")+
+      (e.bio?`<div class="bio">${e.bio}</div>`:'<div class="bio" style="color:var(--muted)">'+esc(t("noBio"))+'</div>');
     modal.classList.add("open");
     document.getElementById("closeX").onclick=()=>modal.classList.remove("open");
   }
@@ -329,24 +574,33 @@
 
   function setFooter(){
     let fetched="";
-    if(DATA.fetchedAt){ try{ fetched=" · data fetched "+new Date(DATA.fetchedAt).toLocaleString("en-GB",{timeZone:TZ,dateStyle:"medium",timeStyle:"short"})+" CEST"; }catch(_){ } }
+    if(DATA.fetchedAt){ try{ fetched=" · "+t("fetched")+" "+new Date(DATA.fetchedAt).toLocaleString(LOCALE,{timeZone:TZ,dateStyle:"medium",timeStyle:"short"})+" CEST"; }catch(_){ } }
     document.getElementById("footer").innerHTML=
-      `${events.length} performances · ${days.length} days · ${(DATA.stages||[]).length} stages. `+
-      `Source: <span class="pill">${esc(DATA.source||"Appmiral API")}</span>${fetched}.`;
+      `${events.length} ${esc(t("performances"))} · ${days.length} ${esc(t("days"))} · ${(DATA.stages||[]).length} ${esc(t("stages"))}. `+
+      `${esc(t("source"))}: <span class="pill">${esc(DATA.source||"Appmiral API")}</span>${esc(fetched)}.`;
   }
 
   function boot(data){
     DATA=data; prep();
-    if(!days.length){ main.innerHTML='<div class="msg">No timetable data.</div>'; return; }
+    if(!days.length){ main.innerHTML='<div class="msg">'+esc(t("noData"))+'</div>'; return; }
+    view = isMobile() ? "list" : "grid";
+    syncViewSeg();
     const ni=nowInfo();
     curDay = days.includes(ni.dk) ? ni.dk : nearestDay(ni.dk);
     renderTabs(); setFooter(); render(true);
   }
 
+  applyLang(detectLang(), false);
+  document.getElementById("langSwitch").addEventListener("click", e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    applyLang(b.dataset.lang, true);
+  });
+  let _rz; window.addEventListener("resize", ()=>{ clearTimeout(_rz); _rz=setTimeout(()=>{ if(DATA) render(false); }, 150); });
+
   fetch("timetable.json?_="+Date.now())
     .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
     .then(boot)
-    .catch(err=>{ main.innerHTML='<div class="msg">Could not load <code>timetable.json</code>: '+esc(err.message)+'</div>'; });
+    .catch(err=>{ main.innerHTML='<div class="msg">'+esc(t("loadError"))+esc(err.message)+'</div>'; });
 })();
 </script>
 </body>
