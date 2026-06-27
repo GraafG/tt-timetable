@@ -2,7 +2,7 @@
  "festival": "TT Festival",
  "edition": "ttfestival2026",
  "source": "Appmiral API app.appmiral.com/api/v7 (live)",
- "fetchedAt": "2026-06-27T15:35:57+00:00",
+ "fetchedAt": "2026-06-27T16:33:22+00:00",
  "timezone": "Europe/Amsterdam",
  "stages": [
   {
@@ -3173,24 +3173,24 @@
    "showInSchedule": 1
   },
   {
-   "id": 327133,
-   "title": "Hannah Mae",
+   "id": 340239,
+   "title": "TAXITAXI",
    "stageId": "16117",
    "stageName": "TT Main Stage",
    "stageColor": "#FF0000",
    "stagePriority": 10,
-   "artistName": "Hannah Mae",
+   "artistName": "TAXITAXI",
    "artistImage": {
     "-1": "",
-    "100": "https://media.appmiral.com/prod/performance/0057/36/thumb_5635819_performance_100.jpeg",
-    "120": "https://media.appmiral.com/prod/performance/0057/36/thumb_5635819_performance_120.jpeg",
-    "250": "https://media.appmiral.com/prod/performance/0057/36/thumb_5635819_performance_250.jpeg",
-    "500": "https://media.appmiral.com/prod/performance/0057/36/thumb_5635819_performance_500.jpeg",
-    "960": "https://media.appmiral.com/prod/performance/0057/36/thumb_5635819_performance_960.jpeg",
-    "1080": "https://media.appmiral.com/prod/performance/0057/36/thumb_5635819_performance_1080.jpeg",
-    "1440": "https://media.appmiral.com/prod/performance/0057/36/thumb_5635819_performance_1440.jpeg"
+    "100": "https://media.appmiral.com/prod/performance/0057/85/thumb_5684393_performance_100.jpeg",
+    "120": "https://media.appmiral.com/prod/performance/0057/85/thumb_5684393_performance_120.jpeg",
+    "250": "https://media.appmiral.com/prod/performance/0057/85/thumb_5684393_performance_250.jpeg",
+    "500": "https://media.appmiral.com/prod/performance/0057/85/thumb_5684393_performance_500.jpeg",
+    "960": "https://media.appmiral.com/prod/performance/0057/85/thumb_5684393_performance_960.jpeg",
+    "1080": "https://media.appmiral.com/prod/performance/0057/85/thumb_5684393_performance_1080.jpeg",
+    "1440": "https://media.appmiral.com/prod/performance/0057/85/thumb_5684393_performance_1440.jpeg"
    },
-   "bio": "<p>Hannah Mae brak de afgelopen jaren door met hits als ‘Wat Wil Je Van Mij’ en ‘Waterdicht’ en groeide uit tot een vaste waarde in de Nederlandse popscene, mede dankzij haar persoonlijke debuutalbum ‘Rode Draad’. Momenteel trekt Hannah Mae volle zalen met een uitverkochte clubtour langs alle grote Nederlandse pop podia.&nbsp;</p>\r\n<p>Hannah Mae zet een volgende grote stap in haar carrière met een headline show in AFAS Live op zaterdag 27 maart 2027. Na indrukwekkende optredens, waaronder een show op Pinkpop, Zwarte Cross en Concert At SEA, en de huidige uitverkochte clubtour waar ze momenteel de laatste shows van speelt, is de zangeres klaar voor haar grootste zaalshow tot nu toe. De show in AFAS Live belooft een bijzondere te worden. </p>",
+   "bio": "<p>Drie man achter het stuur van een roestbak zonder rem.&nbsp;Punk-boyband TAXITAXI scheurt plankgas door scholen, supermarkten,&nbsp;kerken en klinieken.&nbsp;Geen woord Engels en geen woord te veel.</p>\r\n<p>De maatschappelijk relevantie is meteen duidelijk met nummers als “Wil je me VWO diploma zien”, “Mensen praten” en “Doodsbang”. Om zo maar een greep te nemen uit de schatkamer van hits van TAXITAXI.<br></p>\r\n<p>Stap maar in!!</p>",
    "start": "2026-06-27T18:00:00+00:00",
    "end": "2026-06-27T18:45:00+00:00",
    "hideStart": 0,
