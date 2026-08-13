@@ -84,7 +84,11 @@
   *{box-sizing:border-box}
   html,body{height:100%}
   body{margin:0;background:var(--bg);color:var(--fg);min-height:100dvh;display:flex;flex-direction:column;
-       font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;-webkit-text-size-adjust:100%}
+       font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;-webkit-text-size-adjust:100%;
+       overscroll-behavior:none}
+  button,input{font:inherit}
+  button{touch-action:manipulation}
+  button:focus-visible,input:focus-visible{outline:3px solid var(--accent2);outline-offset:2px}
   a{color:var(--accent2)}
   header{padding:14px 22px;border-top:3px solid var(--accent);
          background:linear-gradient(180deg,#181b20,var(--panel));
@@ -142,7 +146,7 @@
          background:var(--checker);background-size:12px 6px;box-shadow:0 0 8px rgba(225,6,0,.55)}
   .nowline::before{content:attr(data-label);position:absolute;left:2px;top:-15px;background:var(--accent);color:#fff;
          font-size:9px;font-weight:800;letter-spacing:.3px;padding:1px 5px;border-radius:4px;white-space:nowrap}
-  .ev{position:absolute;left:4px;right:4px;border-radius:7px;padding:5px 7px;overflow:hidden;
+  .ev{position:absolute;left:4px;right:4px;border-radius:7px;padding:5px 7px;overflow:hidden;color:var(--fg);text-align:left;
       background:#1f2630;border:1px solid var(--line);border-left:4px solid var(--accent);cursor:pointer;
       box-shadow:0 1px 0 rgba(0,0,0,.3)}
   .ev:hover{filter:brightness(1.15)}
@@ -150,7 +154,7 @@
   @keyframes liveGlow{0%,100%{box-shadow:0 0 0 1px var(--danger),0 1px 0 rgba(0,0,0,.3)}
          50%{box-shadow:0 0 0 1px var(--danger),0 0 12px rgba(255,59,48,.6)}}
   .ev .t{font-size:12.5px;font-weight:600;line-height:1.15;white-space:normal;word-break:break-word}
-  .ev .tm{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:2px}
+  .ev .tm{display:block;font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:2px}
   .ev.short{padding:3px 7px}
   .ev.short .tm{display:none}
   .badge{display:inline-block;font-size:9.5px;color:#1a1300;background:var(--warn);
@@ -160,17 +164,33 @@
   .stage-block h3{margin:0;padding:10px 14px;font-size:14px;background:var(--panel2);
          border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px}
   .stage-block h3 .dot{width:11px;height:11px;border-radius:3px}
-  .li{display:flex;gap:12px;padding:9px 14px;border-bottom:1px solid var(--line);align-items:baseline;cursor:pointer}
+  .li{display:flex;width:100%;gap:12px;padding:9px 14px;border:0;border-bottom:1px solid var(--line);
+      align-items:baseline;cursor:pointer;color:var(--fg);background:transparent;text-align:left}
   .li:last-child{border-bottom:0}
   .li:hover{background:#1a1f27}
   .li.live{background:#241316;border-left:3px solid var(--danger)}
   .li .when{font-family:var(--mono);font-size:12px;color:var(--accent2);min-width:108px;flex:none}
   .li .who{font-size:13.5px}
   .li .who .meta{color:var(--muted);font-size:12px;margin-top:1px}
+  .locations{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  .location-card{overflow:hidden;border:1px solid var(--line);border-top:4px solid var(--accent2);
+                 border-radius:10px;background:var(--panel)}
+  .location-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:12px 14px;
+                 border-bottom:1px solid var(--line);background:var(--panel2)}
+  .location-head h3{margin:0;font-size:15px}
+  .location-head .count{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap}
+  .location-event{display:flex;width:100%;gap:10px;padding:10px 14px;border:0;border-bottom:1px solid var(--line);
+                  background:transparent;color:var(--fg);text-align:left;cursor:pointer}
+  .location-event:last-child{border-bottom:0}
+  .location-event:hover{background:#1a1f27}
+  .location-event.live{background:#241316;box-shadow:inset 3px 0 var(--danger)}
+  .location-event .lt{flex:none;width:42px;font-family:var(--mono);font-size:11px;color:var(--accent2)}
+  .location-event .ln{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
   footer{color:var(--muted);font-size:11.5px;padding:14px 22px;border-top:1px solid var(--line);background:var(--panel)}
   .pill{font-family:var(--mono);font-size:11px;color:var(--muted)}
 
-  .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.68);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;
+         backdrop-filter:blur(4px)}
   .modal.open{display:flex}
   .card{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;max-width:520px;width:100%;
         max-height:85vh;overflow:auto;padding:18px 20px}
@@ -178,33 +198,75 @@
   .card .sub{color:var(--muted);font-size:12.5px;margin:0 0 12px}
   .card .bio{font-size:13px;line-height:1.5;color:#cdd6df}
   .card img{max-width:100%;border-radius:8px;margin:6px 0 12px}
-  .card .x{float:right;cursor:pointer;color:var(--muted);font-size:20px;line-height:1}
+  .card .x{float:right;display:grid;place-items:center;width:40px;height:40px;margin:-8px -8px 4px 8px;
+           border:0;border-radius:50%;background:#242a32;color:var(--fg);cursor:pointer;font-size:24px;line-height:1}
+  .related{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+  .related h3{margin:0 0 10px;font-size:13px;color:var(--muted);letter-spacing:.3px;text-transform:uppercase}
+  .related-list{display:flex;gap:8px;overflow-x:auto;padding:1px 1px 8px;scroll-snap-type:x proximity;scrollbar-width:thin}
+  .related-event{flex:0 0 190px;min-height:88px;padding:10px;border:1px solid var(--line);border-left:4px solid var(--accent2);
+                 border-radius:9px;background:var(--panel2);color:var(--fg);text-align:left;cursor:pointer;scroll-snap-align:start}
+  .related-event:hover{border-color:var(--accent2)}
+  .related-event .rt{display:block;font-family:var(--mono);font-size:11px;color:var(--accent2)}
+  .related-event .rn{display:block;margin-top:5px;font-size:13px;font-weight:700;line-height:1.2}
+  .related-event .rs{display:block;margin-top:4px;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .close-bottom{display:none}
 
-  @media (prefers-reduced-motion: reduce){ .ev.live{animation:none} }
+  @media (prefers-reduced-motion: reduce){ .ev.live,.card{animation:none} }
 
   @media (max-width:640px){
-    header{padding:12px 14px}
+    header{padding:10px 12px;align-items:center;gap:8px;flex-wrap:nowrap}
+    .head-main{flex:1 1 auto}
     header h1{font-size:16px;letter-spacing:.4px}
-    header p{font-size:12px;max-width:none}
+    header p{display:none}
+    .langsw{overflow-x:auto;scrollbar-width:none}
+    .langsw button{min-width:38px;min-height:38px;padding:5px 7px}
     .checker{height:7px;background-size:14px 7px}
-    .toolbar{padding:9px 12px;gap:8px}
+    .toolbar{position:relative;z-index:20;padding:8px 10px;gap:8px;background:#1c2026;
+             box-shadow:0 5px 18px rgba(0,0,0,.28)}
     .tabs{order:-1;width:100%;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
-          scrollbar-width:none;padding-bottom:2px}
+          scrollbar-width:none;padding:1px 0 3px;scroll-snap-type:x proximity}
     .tabs::-webkit-scrollbar{display:none}
-    .tab{padding:8px 12px}
+    .tab{min-height:42px;padding:8px 13px;scroll-snap-align:start}
     .spacer{display:none}
-    main{padding:12px 12px}
-    input[type=search]{flex:1 1 auto;min-width:0;font-size:16px;padding:9px 11px}
-    .nowbtn{padding:9px 12px}
-    .seg button{padding:9px 13px}
+    main{padding:10px 10px max(18px,env(safe-area-inset-bottom));overscroll-behavior:contain}
+    input[type=search]{order:2;flex:1 1 150px;min-width:0;min-height:44px;font-size:16px;padding:9px 11px}
+    .nowbtn{order:3;min-height:44px;padding:9px 12px}
+    .seg{order:4}
+    .seg button{min-height:42px;padding:9px 12px}
     :root{--colW:146px;--axisW:46px}
-    .li{padding:11px 12px}
-    .li .when{min-width:92px}
-    .card{padding:16px 14px}
+    .mobile-agenda{display:flex;flex-direction:column;gap:8px}
+    .mobile-agenda .li{min-height:72px;padding:12px;border:1px solid var(--line);border-radius:10px;
+                       align-items:flex-start;background:var(--panel)}
+    .mobile-agenda .li:active{transform:scale(.99);background:#20262e}
+    .mobile-agenda .li.live{border:1px solid var(--danger);border-left:4px solid var(--danger)}
+    .mobile-agenda .when{min-width:64px;font-size:13px;font-weight:700;line-height:1.35}
+    .mobile-agenda .who{min-width:0;flex:1;font-size:15px;font-weight:650;line-height:1.25}
+    .mobile-agenda .meta{display:flex;align-items:center;gap:6px;margin-top:6px;color:var(--muted);
+                         font-size:12px;font-weight:400}
+    .mobile-agenda .dot{width:8px;height:8px;border-radius:2px;flex:none}
+    .locations{grid-template-columns:1fr;gap:10px}
+    .location-head{padding:13px 14px}
+    .location-event{min-height:48px;align-items:center}
+    footer{display:none}
+    .modal{align-items:stretch;padding:0}
+    .card{display:flex;flex-direction:column;max-width:none;width:100%;height:100dvh;max-height:none;
+          padding:calc(16px + env(safe-area-inset-top)) 16px 0;border:0;border-top:3px solid var(--accent);
+          border-radius:0;box-shadow:none;animation:sheetIn .2s ease-out}
+    .card h2{font-size:21px;padding-right:42px}
+    .card .x{position:absolute;right:14px;top:calc(14px + env(safe-area-inset-top));margin:0}
+    .card img{display:block;width:100%;height:auto;max-height:30dvh;aspect-ratio:16/9;object-fit:cover;object-position:center 30%}
+    .related-event{flex-basis:min(72vw,240px);min-height:96px}
+    .close-bottom{display:block;position:sticky;bottom:0;flex:none;width:calc(100% + 32px);min-height:56px;margin:auto -16px 0;
+                  padding:14px 18px calc(14px + env(safe-area-inset-bottom));border:0;border-top:1px solid var(--line);
+                  background:var(--accent);color:#fff;font-weight:800;font-size:16px;letter-spacing:.2px;cursor:pointer}
   }
+  @keyframes sheetIn{from{transform:translateY(24px);opacity:.4}to{transform:none;opacity:1}}
   @media (max-width:380px){
     :root{--colW:130px}
-    header p{display:none}
+    header h1 .flag{display:none}
+    .langsw button{min-width:34px;padding-inline:5px}
+    input[type=search]{flex-basis:100%}
+    .seg{margin-left:auto}
   }
 </style>
 </head>
@@ -230,17 +292,18 @@
 <div class="toolbar">
   <div class="tabs" id="dayTabs"></div>
   <div class="spacer"></div>
-  <button class="nowbtn" id="nowBtn" title="Now">⟳ <span id="nowLbl">Now</span></button>
-  <input type="search" id="q" placeholder="Filter artist / stage…" autocomplete="off" />
+  <button class="nowbtn" id="nowBtn" type="button" title="Now">⟳ <span id="nowLbl">Now</span></button>
+  <input type="search" id="q" placeholder="Filter artist / stage…" autocomplete="off" enterkeyhint="search" />
   <div class="seg" id="viewSeg">
-    <button data-view="grid" class="active">Grid</button>
-    <button data-view="list">List</button>
+    <button type="button" data-view="locations" class="active">Locations</button>
+    <button type="button" data-view="list">List</button>
+    <button type="button" data-view="grid">Grid</button>
   </div>
 </div>
 
 <main id="main"><div class="msg" id="loadingMsg">Loading timetable…</div></main>
 
-<div class="modal" id="modal"><div class="card" id="card"></div></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle"><div class="card" id="card"></div></div>
 
 <div class="checker" aria-hidden="true"></div>
 <footer id="footer"></footer>
@@ -250,7 +313,7 @@
   "use strict";
   const TZ_DEFAULT = "Europe/Amsterdam";
   let DATA, TZ, events = [], dayMap = new Map(), days = [];
-  let curDay = null, view = "grid", query = "";
+  let curDay = null, view = "locations", query = "";
 
   const esc = s => (s==null?"":String(s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
   // artistImage is a width-keyed object ({"100":url,"500":url,...}); pick a good-sized URL.
@@ -277,11 +340,13 @@
       h1:"TT Festival — timetable",
       intro:"Live programme from the festival app's own backend, grouped by <b>day</b>, <b>stage</b> and <b>time</b>. Opens on <b>today</b> and jumps to the current hour. Times in <b>Europe/Amsterdam</b> (CEST). Data auto-refreshes hourly — see footer for last fetch.",
       now:"Now", nowChip:"now", searchPh:"Filter artist / stage…",
-      grid:"Grid", list:"List", timeCol:"Time",
+      grid:"Grid", list:"List", locations:"Locations", timeCol:"Time",
       loading:"Loading timetable…", noMatch:"No performances match.", noData:"No timetable data.",
       loadError:"Could not load timetable.json: ",
-      soldOut:"sold out", soldOutBadge:"SOLD OUT", onNow:"on now", noBio:"No biography in the dataset.",
-      performances:"performances", days:"days", stages:"stages", source:"Source", fetched:"data fetched"
+      soldOut:"sold out", soldOutBadge:"SOLD OUT", onNow:"on now", noBio:"No biography in the dataset.", close:"Close",
+      sameTime:"Also playing at this time",
+      performances:"performances", days:"days", stages:"stages", source:"Source", fetched:"data fetched",
+      atLocation:"events here"
     },
     nl:{
       docTitle:"TT Festival tijdschema — speeltijden per dag, podium & tijd | Assen 2026",
@@ -290,11 +355,13 @@
       h1:"TT Festival — tijdschema",
       intro:"Live programma uit de eigen backend van de festival-app, gegroepeerd per <b>dag</b>, <b>podium</b> en <b>tijd</b>. Opent op <b>vandaag</b> en springt naar het huidige uur. Tijden in <b>Europa/Amsterdam</b> (CEST). Data ververst automatisch elk uur — zie de voettekst voor de laatste update.",
       now:"Nu", nowChip:"nu", searchPh:"Filter artiest / podium…",
-      grid:"Raster", list:"Lijst", timeCol:"Tijd",
+      grid:"Raster", list:"Lijst", locations:"Locaties", timeCol:"Tijd",
       loading:"Tijdschema laden…", noMatch:"Geen optredens gevonden.", noData:"Geen programmagegevens.",
       loadError:"Kon timetable.json niet laden: ",
-      soldOut:"uitverkocht", soldOutBadge:"UITVERKOCHT", onNow:"nu bezig", noBio:"Geen biografie in de dataset.",
-      performances:"optredens", days:"dagen", stages:"podia", source:"Bron", fetched:"data opgehaald"
+      soldOut:"uitverkocht", soldOutBadge:"UITVERKOCHT", onNow:"nu bezig", noBio:"Geen biografie in de dataset.", close:"Sluiten",
+      sameTime:"Ook te zien rond deze tijd",
+      performances:"optredens", days:"dagen", stages:"podia", source:"Bron", fetched:"data opgehaald",
+      atLocation:"events hier"
     },
     de:{
       docTitle:"TT Festival Zeitplan — Spielzeiten nach Tag, Bühne & Zeit | Assen 2026",
@@ -303,11 +370,13 @@
       h1:"TT Festival — Zeitplan",
       intro:"Live-Programm aus dem eigenen Backend der Festival-App, gruppiert nach <b>Tag</b>, <b>Bühne</b> und <b>Zeit</b>. Öffnet beim <b>heutigen Tag</b> und springt zur aktuellen Stunde. Zeiten in <b>Europa/Amsterdam</b> (MESZ). Daten werden stündlich automatisch aktualisiert — siehe Fußzeile für den letzten Abruf.",
       now:"Jetzt", nowChip:"jetzt", searchPh:"Künstler / Bühne filtern…",
-      grid:"Raster", list:"Liste", timeCol:"Zeit",
+      grid:"Raster", list:"Liste", locations:"Orte", timeCol:"Zeit",
       loading:"Zeitplan wird geladen…", noMatch:"Keine passenden Auftritte.", noData:"Keine Zeitplandaten.",
       loadError:"timetable.json konnte nicht geladen werden: ",
-      soldOut:"ausverkauft", soldOutBadge:"AUSVERKAUFT", onNow:"läuft jetzt", noBio:"Keine Biografie im Datensatz.",
-      performances:"Auftritte", days:"Tage", stages:"Bühnen", source:"Quelle", fetched:"Daten abgerufen"
+      soldOut:"ausverkauft", soldOutBadge:"AUSVERKAUFT", onNow:"läuft jetzt", noBio:"Keine Biografie im Datensatz.", close:"Schließen",
+      sameTime:"Zur gleichen Zeit",
+      performances:"Auftritte", days:"Tage", stages:"Bühnen", source:"Quelle", fetched:"Daten abgerufen",
+      atLocation:"Events hier"
     },
     fr:{
       docTitle:"Programme du TT Festival — horaires par jour, scène & heure | Assen 2026",
@@ -316,11 +385,13 @@
       h1:"TT Festival — programme",
       intro:"Programme en direct depuis le backend de l'appli du festival, regroupé par <b>jour</b>, <b>scène</b> et <b>heure</b>. S'ouvre sur <b>aujourd'hui</b> et saute à l'heure actuelle. Heures en <b>Europe/Amsterdam</b> (CEST). Données actualisées automatiquement chaque heure — voir le pied de page pour la dernière mise à jour.",
       now:"Maintenant", nowChip:"maintenant", searchPh:"Filtrer artiste / scène…",
-      grid:"Grille", list:"Liste", timeCol:"Heure",
+      grid:"Grille", list:"Liste", locations:"Lieux", timeCol:"Heure",
       loading:"Chargement du programme…", noMatch:"Aucune représentation trouvée.", noData:"Aucune donnée de programme.",
       loadError:"Impossible de charger timetable.json : ",
-      soldOut:"complet", soldOutBadge:"COMPLET", onNow:"en cours", noBio:"Aucune biographie dans les données.",
-      performances:"représentations", days:"jours", stages:"scènes", source:"Source", fetched:"données récupérées"
+      soldOut:"complet", soldOutBadge:"COMPLET", onNow:"en cours", noBio:"Aucune biographie dans les données.", close:"Fermer",
+      sameTime:"Également à cette heure",
+      performances:"représentations", days:"jours", stages:"scènes", source:"Source", fetched:"données récupérées",
+      atLocation:"événements ici"
     }
   };
   let lang = "en", T = I18N.en, LOCALE = "en-GB";
@@ -351,8 +422,9 @@
     const nb=document.getElementById("nowBtn"); if(nb) nb.title=t("now");
     const q=document.getElementById("q"); if(q) q.placeholder=t("searchPh");
     const seg=document.getElementById("viewSeg");
-    if(seg){ const g=seg.querySelector('[data-view="grid"]'), l=seg.querySelector('[data-view="list"]');
-             if(g) g.textContent=t("grid"); if(l) l.textContent=t("list"); }
+    if(seg){ const g=seg.querySelector('[data-view="grid"]'), l=seg.querySelector('[data-view="list"]'),
+                   p=seg.querySelector('[data-view="locations"]');
+             if(g) g.textContent=t("grid"); if(l) l.textContent=t("list"); if(p) p.textContent=t("locations"); }
     const lm=document.getElementById("loadingMsg"); if(lm) lm.textContent=t("loading");
   }
   function applyMeta(){
@@ -438,7 +510,9 @@
     tabsEl.innerHTML="";
     days.forEach(dk=>{
       const b=document.createElement("button");
+      b.type="button";
       b.className="tab"+(dk===curDay?" active":"")+(dk===todayKey?" today":"");
+      b.setAttribute("aria-pressed", dk===curDay ? "true" : "false");
       b.innerHTML=fmtDayLbl.format(new Date(dk+"T12:00:00Z"))+'<span class="n">'+dayMap.get(dk).length+'</span>';
       b.onclick=()=>{ curDay=dk; renderTabs(); render(); };
       tabsEl.appendChild(b);
@@ -490,8 +564,8 @@
         const tm=(e.hideStart?"":fmtTime.format(e._sd))+(e.hideEnd||e.hideStart?"":"–"+fmtTime.format(e._ed));
         const so=e.soldOut?'<span class="badge">'+esc(t("soldOutBadge"))+'</span>':"";
         const cls="ev"+(hgt<34?" short":"")+(isLive(e)?" live":"");
-        body+=`<div class="${cls}" style="top:${top}px;height:${hgt}px;border-left-color:${esc(col)}" data-id="${e.id}">`+
-              `<div class="t">${esc(e.title)}${so}</div><div class="tm">${esc(tm)}</div></div>`;
+        body+=`<button type="button" class="${cls}" style="top:${top}px;height:${hgt}px;border-left-color:${esc(col)}" data-id="${e.id}">`+
+              `<span class="t">${esc(e.title)}${so}</span><span class="tm">${esc(tm)}</span></button>`;
       });
       body+=`</div>`;
     });
@@ -504,6 +578,20 @@
     const order=SO(), color=SC();
     const stages=stagesForDay(list,order);
     if(!stages.length) return '<div class="msg">'+esc(t("noMatch"))+'</div>';
+    if(isMobile()){
+      const sorted=[...list].sort((a,b)=>a._startAbs-b._startAbs || (order.get(a.stageId)??9e9)-(order.get(b.stageId)??9e9));
+      let agenda='<div class="mobile-agenda">';
+      sorted.forEach(e=>{
+        const tm=e.hideStart?"—":fmtTime.format(e._sd);
+        const end=e.hideEnd||e.hideStart?"":fmtTime.format(e._ed);
+        const col=e.stageColor||color.get(e.stageId)||"#3fb950";
+        const so=e.soldOut?'<span class="badge">'+esc(t("soldOutBadge"))+'</span>':"";
+        agenda+=`<button type="button" class="li${isLive(e)?" live":""}" data-id="${e.id}">`+
+          `<span class="when">${esc(tm)}${end?`<br><span style="color:var(--muted);font-size:10px;font-weight:400">${esc(end)}</span>`:""}</span>`+
+          `<span class="who">${esc(e.title)}${so}<span class="meta"><span class="dot" style="background:${esc(col)}"></span>${esc(e.stageName)}</span></span></button>`;
+      });
+      return agenda+"</div>";
+    }
     let html="";
     stages.forEach(sid=>{
       const evs=list.filter(e=>e.stageId===sid).sort((a,b)=>a._startAbs-b._startAbs);
@@ -512,34 +600,76 @@
       evs.forEach(e=>{
         const tm=(e.hideStart?"—":fmtTime.format(e._sd))+(e.hideEnd||e.hideStart?"":" – "+fmtTime.format(e._ed));
         const so=e.soldOut?'<span class="badge">'+esc(t("soldOutBadge"))+'</span>':"";
-        const meta=e.artistName&&e.artistName!==e.title?`<div class="meta">${esc(e.artistName)}</div>`:"";
-        html+=`<div class="li${isLive(e)?" live":""}" data-id="${e.id}"><div class="when">${esc(tm)}</div>`+
-              `<div class="who">${esc(e.title)}${so}${meta}</div></div>`;
+        const meta=e.artistName&&e.artistName!==e.title?`<span class="meta">${esc(e.artistName)}</span>`:"";
+        html+=`<button type="button" class="li${isLive(e)?" live":""}" data-id="${e.id}"><span class="when">${esc(tm)}</span>`+
+              `<span class="who">${esc(e.title)}${so}${meta}</span></button>`;
       });
       html+=`</div>`;
     });
     return html;
   }
 
+  function renderLocations(list){
+    const order=SO(), color=SC();
+    const stages=stagesForDay(list,order);
+    if(!stages.length) return '<div class="msg">'+esc(t("noMatch"))+'</div>';
+    return `<div class="locations">`+stages.map(sid=>{
+      const evs=list.filter(e=>e.stageId===sid).sort((a,b)=>a._startAbs-b._startAbs);
+      const name=evs[0].stageName||("Stage "+sid), col=color.get(sid)||"#3fb950";
+      return `<section class="location-card" style="border-top-color:${esc(col)}">`+
+        `<div class="location-head"><h3>${esc(name)}</h3><span class="count">${evs.length} ${esc(t("atLocation"))}</span></div>`+
+        evs.map(e=>`<button type="button" class="location-event${isLive(e)?" live":""}" data-id="${esc(e.id)}">`+
+          `<span class="lt">${esc(e.hideStart?"—":fmtTime.format(e._sd))}</span><span class="ln">${esc(e.title)}</span></button>`).join("")+
+        `</section>`;
+    }).join("")+`</div>`;
+  }
+
   // ---- detail ----
   const modal=document.getElementById("modal"), card=document.getElementById("card");
+  let detailTrigger=null;
+  function closeDetail(){
+    modal.classList.remove("open");
+    document.body.style.overflow="";
+    if(detailTrigger) detailTrigger.focus();
+  }
+  function relatedEvents(e){
+    return events.filter(x=>String(x.id)!==String(e.id) && x._day===e._day &&
+      x._sd.getTime()<e._ed.getTime() && x._ed.getTime()>e._sd.getTime())
+      .sort((a,b)=>a._startAbs-b._startAbs);
+  }
   function openDetail(id){
     const e=events.find(x=>String(x.id)===String(id)); if(!e) return;
     const tm=fmtDayLbl.format(e._sd)+" · "+fmtTime.format(e._sd)+"–"+fmtTime.format(e._ed);
-    card.innerHTML=`<span class="x" id="closeX">×</span><h2>${esc(e.title)}</h2>`+
+    if(!modal.classList.contains("open")) detailTrigger=document.activeElement;
+    const related=relatedEvents(e);
+    const relatedHtml=related.length?`<section class="related"><h3>${esc(t("sameTime"))}</h3><div class="related-list">`+
+      related.map(x=>{
+        const col=x.stageColor||SC().get(x.stageId)||"#3fb950";
+        return `<button type="button" class="related-event" data-related-id="${esc(x.id)}" style="border-left-color:${esc(col)}">`+
+          `<span class="rt">${esc(fmtTime.format(x._sd))}–${esc(fmtTime.format(x._ed))}</span>`+
+          `<span class="rn">${esc(x.title)}</span><span class="rs">${esc(x.stageName)}</span></button>`;
+      }).join("")+`</div></section>`:"";
+    card.innerHTML=`<button type="button" class="x" id="closeX" aria-label="${esc(t("close"))}">×</button><h2 id="detailTitle">${esc(e.title)}</h2>`+
       `<p class="sub">${esc(e.stageName)} · ${esc(tm)}${e.soldOut?' · <b style="color:var(--warn)">'+esc(t("soldOut"))+'</b>':''}${isLive(e)?' · <b style="color:var(--danger)">'+esc(t("onNow"))+'</b>':''}</p>`+
       (imgUrl(e.artistImage)?`<img src="${esc(imgUrl(e.artistImage))}" alt="${esc(e.artistName||e.title||"")}" loading="lazy" onerror="this.style.display='none'">`:"")+
-      (e.bio?`<div class="bio">${e.bio}</div>`:'<div class="bio" style="color:var(--muted)">'+esc(t("noBio"))+'</div>');
+      relatedHtml+
+      (e.bio?`<div class="bio">${e.bio}</div>`:'<div class="bio" style="color:var(--muted)">'+esc(t("noBio"))+'</div>')+
+      `<button type="button" class="close-bottom" id="closeBottom">${esc(t("close"))}</button>`;
     modal.classList.add("open");
-    document.getElementById("closeX").onclick=()=>modal.classList.remove("open");
+    document.body.style.overflow="hidden";
+    document.getElementById("closeX").onclick=closeDetail;
+    document.getElementById("closeBottom").onclick=closeDetail;
+    card.querySelectorAll("[data-related-id]").forEach(el=>el.onclick=()=>openDetail(el.dataset.relatedId));
+    document.getElementById("closeX").focus();
   }
-  modal.onclick=ev=>{ if(ev.target===modal) modal.classList.remove("open"); };
+  modal.onclick=ev=>{ if(ev.target===modal) closeDetail(); };
+  document.addEventListener("keydown",ev=>{ if(ev.key==="Escape"&&modal.classList.contains("open")) closeDetail(); });
 
   // ---- render + now-focus ----
   const main=document.getElementById("main");
   function render(focusNow){
     const list=visible(dayMap.get(curDay)||[]);
-    main.innerHTML = view==="grid" ? renderGrid(list) : renderList(list);
+    main.innerHTML = view==="grid" ? renderGrid(list) : view==="locations" ? renderLocations(list) : renderList(list);
     main.querySelectorAll("[data-id]").forEach(el=> el.onclick=()=>openDetail(el.getAttribute("data-id")));
     if(focusNow) scrollToNow();
   }
@@ -550,7 +680,8 @@
       const wrap=document.getElementById("gridwrap"); const nl=wrap&&wrap.querySelector(".nowline");
       if(wrap&&nl){ wrap.scrollTop=Math.max(0, nl.offsetTop - wrap.clientHeight/2); }
     }else{
-      const live=main.querySelector(".li.live")||[...main.querySelectorAll(".li")].find(el=>true);
+      const live=main.querySelector(".li.live,.location-event.live")||
+        main.querySelector(".li,.location-event");
       if(live) live.scrollIntoView({block:"center"});
     }
   }
@@ -583,7 +714,7 @@
   function boot(data){
     DATA=data; prep();
     if(!days.length){ main.innerHTML='<div class="msg">'+esc(t("noData"))+'</div>'; return; }
-    view = isMobile() ? "list" : "grid";
+    view = "locations";
     syncViewSeg();
     const ni=nowInfo();
     curDay = days.includes(ni.dk) ? ni.dk : nearestDay(ni.dk);
