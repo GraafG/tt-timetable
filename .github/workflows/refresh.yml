@@ -1,9 +1,7 @@
 name: Refresh timetable
 
 on:
-  schedule:
-    - cron: "5 * * * *"   # hourly, at :05
-  workflow_dispatch:        # manual trigger
+  workflow_dispatch:        # manual trigger only
 
 permissions:
   contents: write
